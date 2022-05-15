@@ -1,0 +1,63 @@
+//Longest Common Subsequence
+/* Cases:
+* (i) S1[i-1]=S2[j-1]
+*      f[i,j] = 1+f(i-1,j-1)
+* (ii) S1[i-1]!=S2[j-1]
+*      Further two posssibilities
+*       (a) Take S1[i-1] in LCS
+*       (b) Take S2[j-1] in LCS
+*       f{i,j)=max(f(i-1,j),f(i,j-1))
+*/
+
+const int N = 1e3 + 2;
+//memoization
+int dp[N][N];
+int lcs(string& s1, string& s2, int n, int m) {
+    if (n == 0 || m == 0) {
+        return 0;
+    }
+    if (dp[n][m] != -1) return dp[n][m];
+    if (s1[n - 1] == s2[m - 1])
+        dp[n][m]= 1 + lcs(s1, s2, n - 1, m - 1);
+    else {
+        dp[n][m]=max(lcs(s1, s2, n, m - 1), lcs(s1, s2, n - 1, m));
+    }
+    return dp[n][m];
+}
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    rep(i, N) {
+        rep(j, N)
+            dp[i][j] = -1;
+    }
+    string s1, s2;
+    cin >> s1 >> s2;
+    int n = s1.size(), m = s2.size();
+    cout << lcs(s1, s2, n, m) << endl;
+
+    //tabulation approach
+    vector<vi> DP(n + 1, vi(m + 1, -1));
+    rep(i, n + 1) {
+        rep(j, m + 1) {
+            if (i == 0 || j == 0) {
+                DP[i][j] = 0;
+                continue;
+            }
+            if (s1[i - 1] == s2[j - 1])
+                DP[i][j] = 1 + DP[i - 1][j - 1];
+            else
+                DP[i][j] = max(DP[i - 1][j], DP[i][j - 1]);
+        }
+    }
+    cout << DP[n][m] << endl;
+
+    return 0;
+}
+
