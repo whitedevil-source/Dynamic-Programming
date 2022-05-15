@@ -1,0 +1,33 @@
+//Maximum Subarray Sum (Kadane's Algo)
+/*Approach:
+* Maintain two varaiables curr and max till now
+* Initialize curr=0 and max till now=0
+* Iterate from i=0 to i=n-1 and do
+*       curr+=a[i]
+*       max till now= max[max till now, curr]
+* If curr<0 the do curr=0
+* {Basically neglecting the elements contributing to negative sum}
+* When loop ends, output max till now
+*/
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    int n; cin >> n;
+    vi a(n);
+    rep(i, n) cin >> a[i];
+    int curr = 0, maxTillNow = 0;
+    rep(i, n) {
+        curr += a[i];
+        maxTillNow = max(maxTillNow, curr);
+        if (curr < 0) curr = 0;
+    }
+    cout << maxTillNow << endl;
+    
+    return 0;
+}
