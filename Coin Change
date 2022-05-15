@@ -1,0 +1,56 @@
+//Coin Change Problem
+//Given a set of coins and value V
+// Find number of ways we can make change of V
+/*iDEA:
+* tO make ways with every coin, we have 2 options
+* (a) Take it
+* (b) Do not take it
+*  cnt(S[],m,V)=cnt(S[],m,V-Sm) + cnt(S[],m-1,V)
+* 
+* For every cell, we have two options in table:
+* (i) Take the coin (dp[i][j-s(i-1)])
+* (ii) Do not take the coin (dp[i-1][j])
+* 
+* To improve space complexity,
+* we do not take an extra row, update on the same cell
+*/
+
+const int N = 1e3 + 2;
+int dp[N][N];
+int CoinChange(vi& a, int n, int x)
+{
+    if (x == 0) return 1;
+    if (x < 0) return 0;
+    if (n <= 0) return 0;
+    if (dp[n][x] != -1) return dp[n][x];
+    dp[n][x] = CoinChange(a, n, x - a[n - 1]) + CoinChange(a, n - 1, x);
+    return dp[n][x]; 
+}
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    int n; cin >> n;
+    vi a(n);
+
+    rep(i, 0, n) cin >> a[i];
+
+    int x; cin >> x;
+    vector<vi> dp(n + 1, vi(x + 1, 0));
+    dp[0][0] = 1;
+    for (int i = 1; i < n + 1; i++) {
+        for (int j = 0; j < x + 1; j++) {
+            if (j - a[i - 1] >= 0)
+                dp[i][j] += dp[i][j - a[i - 1]];
+            dp[i][j] += dp[i - 1][j];
+        }
+    }
+    cout << dp[x];
+    
+    return 0;
+}
+
