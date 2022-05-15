@@ -1,0 +1,56 @@
+//0-1 Knapsack
+/* Given an array of items with their {wt, value} and
+* knapsack with weight W. Find max value of items that
+* can be stolen
+* NOTE: greedy cannot be applied since items are indivisible
+*/
+
+/* Way of thinking
+* We iterate from L->R in items array. For each item
+* we have 2 choices --(i)Take it=remaining capacity 
+* of knapsack and (ii) not Take it=capacity remains same
+* Let f(n,w) denote the maximum value of items we can
+* pick till item n and current capacity of knapsack w
+* f(n,w)=max(f(n-1,w),f(n-1,w-weight[n]+value[n]))
+*/
+
+const int N = 1e3 + 2, MOD = 1e9 + 7;
+int val[N], wt[N];
+int dp[N][N];
+
+int knapsack(int n, int w) {
+    if (w <= 0) return 0;
+    if (n <= 0) return 0;
+    if (dp[n][w] != -1) return dp[n][w];
+    
+    if (wt[n - 1] > w) dp[n][w]= knapsack(n - 1, w);
+    else dp[n][w]= max(knapsack(n - 1, w), knapsack(n - 1, w - wt[n - 1] + val[n - 1]));
+    return dp[n][w];
+}
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    rep(i, N) {
+        rep(j, N)
+            dp[i][j] = -1;
+    }
+
+    int n; cin >> n;
+    rep(i, n) {
+        cin >> wt[i];
+    }
+    rep(i, n) {
+        cin >> val[i];
+    }
+    int w; cin >> w;
+    cout << knapsack(n, w);
+    
+    return 0;
+}
+
