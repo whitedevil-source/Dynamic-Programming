@@ -1,0 +1,37 @@
+//0-N knapsack
+/*Given an array of items with their weight and value.
+* Find the max value of items that can be stolen using
+* a knapsack of capacity W.
+* Note: you can choose infinite items of each type
+*/
+// Recurrence for 0-N knapsack
+/*
+* dp[i][W]=max({knapSackRec(W,wt,val,i+1,dp),val[i]+knapSackRec(W-wt[i],wt,val,i,dp)}) //if W-wt[i]>=0
+* For each weight w, we check for every item if taking it gives
+* maximum result for weight w
+*/
+
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    int n = 5, W = 11;
+    vi val = {};
+    vi wt = {};
+    vi dp(W + 1, 0);
+    rep(j, W) {
+        rep(i, n) {
+            if(j-wt[i]>=0)
+                dp[j] = max(dp[j], val[i] + dp[j - wt[i]]);
+        }
+    }
+    cout << dp[W];
+
+    return 0;
+}
+
