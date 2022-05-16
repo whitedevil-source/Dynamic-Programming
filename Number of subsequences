@@ -1,0 +1,42 @@
+//Number of subsequences
+/*You are given a string s consisting of lower case
+* Latin letters ('a'-'z') and some '?'
+* Your task is to find number of subsequences 'abc'
+* in all the strings '?' should be replaced by either
+* of {'a','b','c'}
+*/
+/*Optimal merge pattern
+* declare 4 variables
+* (i) e-> denoting count of all possible strings upto current element
+* (ii) a-> denoting count of subsequence ('a') in all strings upto current element
+* (iii) ab-> denoting count of subsequences  ('ab') in all strings upto current element
+* (iv) abc-> denoting count of subsequences ('abc') in all strings upto cuurent element
+*/
+
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    int n; cin >> n;
+    string s; cin >> s;
+    int e = 1, a = 0, ab = 0, abc = 0;
+    rep(i, n) {
+        if (s[i] == 'a') a += e;
+        else if (s[i] == 'b') ab += a;
+        else if (s[i] == 'c') abc += ab;
+        else if (s[i] == '?') {
+            abc = 3 * abc + ab;
+            ab = 3 * ab + a;
+            a = 3 * a + e;
+        }
+    }
+    cout << abc << endl;
+
+    return 0;
+}
+
