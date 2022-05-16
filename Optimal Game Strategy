@@ -1,0 +1,44 @@
+//Optimal Game Strategy:
+/*Rahul and Neha are playing a coin game. They are given n coins
+with values x1,x2,....xn wher n is always even. They take alternate
+turns. In each turn, a player picks either the first coin or the
+last coin from the row and removes it from from the row. The value
+of coin is received by that player. Determine max value that Rahul
+can win if he moves first. Both play optimally.
+*/
+/*Idea
+*For a given arrangement of coins A[i...j]
+we have two choices,
+1.we can choose A[i]
+2.we can choose A[j]
+In each case, our opponent will also have two choices.
+She will try to maximize her score and minimize ours.
+Therefore, our subproblem will reduce to
+choice 1= a[i]+min(solve(i+2,j),solve(i+1,j-1))
+choice 2= a[j]+min(solve(i,j-2),solve(i+1,j-1))
+*/
+
+vi a;
+int dp[100][100];
+int solve(int i, int j) {
+    if (i == j) return a[i];
+    if (i > j) return 0;
+    if (dp[i][j] != -1) return dp[i][j];
+    int l = a[i] + min(solve(i + 2, j), solve(i + 1, j - 1));
+    int r = a[j] + min(solve(i, j - 2), solve(i + 1, j - 1));
+    return dp[i][j] = max(l, r);
+}
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    memset(dp, -1, sizeof(dp));
+
+    return 0;
+}
+
